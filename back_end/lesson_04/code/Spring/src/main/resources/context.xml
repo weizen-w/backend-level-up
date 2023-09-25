@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:application.properties" />
+
+    <bean id="userService" class="de.ait.shop.services.impl.UsersServiceImpl">
+        <constructor-arg name="usersRepository" ref="usersRepository"/>
+    </bean>
+
+    <bean id="usersRepository" class="de.ait.shop.repositories.impl.UsersRepositoryJdbcImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+        <constructor-arg name="configuration" ref="hikariConfig"/>
+    </bean>
+
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="jdbcUrl" value="${hikari.jdbc.url}"/>
+        <property name="username" value="${hikari.jdbc.username}"/>
+        <property name="password" value="${hikari.jdbc.password}"/>
+        <property name="maximumPoolSize" value="${hikari.jdbc.maxPoolSize}"/>
+    </bean>
+</beans>
